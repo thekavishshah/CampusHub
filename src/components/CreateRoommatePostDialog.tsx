@@ -42,8 +42,14 @@ const CreateRoommatePostDialog = ({ open, onOpenChange, onPostCreated }: CreateR
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!user) return;
+    if (!user) {
+      console.log("No user found");
+      return;
+    }
 
+    console.log("Form data:", formData);
+    console.log("User:", user);
+    
     setLoading(true);
     try {
       const { error } = await supabase
@@ -61,7 +67,10 @@ const CreateRoommatePostDialog = ({ open, onOpenChange, onPostCreated }: CreateR
           is_anonymous: formData.is_anonymous,
         });
 
-      if (error) throw error;
+      if (error) {
+        console.error("Supabase error:", error);
+        throw error;
+      }
 
       toast({
         title: "Post Created",

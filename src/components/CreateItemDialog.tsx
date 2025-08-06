@@ -30,8 +30,14 @@ const CreateItemDialog = ({ open, onOpenChange, onItemCreated }: CreateItemDialo
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!user) return;
+    if (!user) {
+      console.log("No user found");
+      return;
+    }
 
+    console.log("Form data:", formData);
+    console.log("User:", user);
+    
     setLoading(true);
     try {
       const { error } = await supabase
@@ -46,7 +52,10 @@ const CreateItemDialog = ({ open, onOpenChange, onItemCreated }: CreateItemDialo
           status: "available",
         });
 
-      if (error) throw error;
+      if (error) {
+        console.error("Supabase error:", error);
+        throw error;
+      }
 
       toast({
         title: "Item Listed",
